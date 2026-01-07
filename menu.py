@@ -21,8 +21,7 @@ def menu_proteinas():
     sel_proteina = int((input("Escoga su proteina: ")))
     if sel_proteina in Proteina_Diccionario.keys():
             proteina,precio = Proteina_Diccionario[sel_proteina]
-    proteina = Pro1
-    precio = pre1
+
 
 # def menu_rellenos():
 #     print('--'*30)
