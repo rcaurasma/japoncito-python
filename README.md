@@ -31,8 +31,7 @@ Japoncito/
 
 ## Requisitos
 
-- Python 3.7+
-
+- Python 3.12+
 ---
 
 <details>
@@ -52,18 +51,18 @@ Japoncito/
 
 ### Resumen del roll actual
 
-![Bienvenida](./assets/japoncito4.png)
+![Resumen del roll actual](./assets/japoncito4.png)
 
 ### Resumen del pedido
 
-![Bienvenida](./assets/japoncito5.png)
+![Resumen del pedido](./assets/japoncito5.png)
 
-### Resumen del roll actual
+### Medio de pago
 
-![Bienvenida](./assets/japoncito6.png)
+![Pago](./assets/japoncito6.png)
 
-### Resumen del roll actual
+### Despedida
 
-![Bienvenida](./assets/japoncito7.png)
+![Despedida](./assets/japoncito7.png)
 
 </details>
