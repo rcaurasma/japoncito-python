@@ -38,9 +38,9 @@ Japoncito/
 <details>
 <summary><strong>📸 Capturas de pantalla</strong></summary>
 
-### Menú de proteínas
+### Bienvenida
 
-![Proteínas](./screenshots/proteinas.png)
+![Bienvenida](./src/japoncito(1).png)
 
 ### Selección de contornos
 
@@ -48,10 +48,10 @@ Japoncito/
 
 ### Resumen del pedido
 
-![Resumen](./screenshots/resumen.png)
+![Metodo de pago](./screenshots/resumen.png)
 
 ### Método de pago
 
-![Pago](./screenshots/pago.png)
+![Resumen](./screenshots/pago.png)
 
 </details>

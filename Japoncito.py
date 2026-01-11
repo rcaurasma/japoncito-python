@@ -1,230 +1,217 @@
 from tabulate import tabulate
+from colorama import Fore, Style, init
+from getpass import getpass
+import os
 
-def pago_efectivo(monto):
-    """Procesa pagos en efectivo"""
-    print(f"\nMonto a pagar: ${monto}")
-    pago = int(input("Con cuanto cancela?: "))
-    print(f"Usted cancelo con: ${pago}")
-    cambio = pago - monto
-    
-    while cambio < 0:
-        print(f"El pago es insuficiente. Aun debe: ${abs(cambio)}")
-        pago = int(input("Con cuanto cancela?: "))
+init(autoreset=True)
+
+VERDE = Fore.LIGHTGREEN_EX
+BLANCO = Fore.WHITE
+RESET = Style.RESET_ALL
+BRIGHT = Style.BRIGHT
+
+def limpiar_pantalla():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def obtener_opcion(mensaje, min_opcion, max_opcion):
+    while True:
+        try:
+            entrada = input(mensaje).strip()
+            if not entrada:
+                print(f"{BLANCO}Error: Ingrese un número del {min_opcion} al {max_opcion}.{RESET}")
+                continue
+            opcion = int(entrada)
+            if min_opcion <= opcion <= max_opcion:
+                return opcion
+            print(f"{BLANCO}Error: Ingrese un número del {min_opcion} al {max_opcion}.{RESET}")
+        except ValueError:
+            print(f"{BLANCO}Error: Ingrese un número del {min_opcion} al {max_opcion}.{RESET}")
+
+def mostrar_menu(titulo, opciones):
+    print(f'\n{BRIGHT}{VERDE}{"▬"*60}{RESET}')
+    print(f'{BRIGHT}{VERDE}{titulo.center(60)}{RESET}')
+    print(f'{BRIGHT}{VERDE}{"▬"*60}{RESET}')
+    tabla = [[k, v[0], f"${v[1]}"] for k, v in opciones.items()]
+    print(tabulate(tabla, headers=["Opcion", "Nombre", "Precio"], tablefmt="grid"))
+
+def procesar_pago(monto, metodo):
+    if metodo == 1:
+        limpiar_pantalla()
+        print(f"\n{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+        print(f"{BRIGHT}{VERDE}PROCESANDO PAGO EN EFECTIVO{RESET}".center(60))
+        print(f"{BRIGHT}{VERDE}{'▬'*60}{RESET}\n")
+        print(f"Monto a pagar: {BLANCO}${monto}{RESET}")
+        pago = int(input("¿Con cuanto cancela?: "))
+        while pago < monto:
+            limpiar_pantalla()
+            print(f"\n{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+            print(f"{BRIGHT}{VERDE}PROCESANDO PAGO EN EFECTIVO{RESET}".center(60))
+            print(f"{BRIGHT}{VERDE}{'▬'*60}{RESET}\n")
+            print(f"Monto a pagar: {BLANCO}${monto}{RESET}")
+            print(f"{BLANCO}Insuficiente. Falta ${monto - pago}{RESET}")
+            pago = int(input("¿Con cuanto cancela?: "))
         cambio = pago - monto
-        print(f"Usted cancela con: ${pago}")
-    
-    if cambio == 0:
-        print("El pago es exacto. No hay cambio.")
-    else:
-        print(f"Su cambio es: ${cambio}")
-    print("Su compra ha sido realizada con exito.")
-
-
-def pago_debito(monto):
-    """Procesa pagos con debito"""
-    while True:
-        nombre = input("\nPor favor, ingrese su nombre de usuario: ").strip()
-        clave = input("Por favor, ingrese su contraseña: ").strip()
-        if nombre == 'alex' and clave == '1234':
-            print(f"Credenciales correctas. Bienvenido, {nombre}")
-            break
+        if cambio > 0:
+            print(f"Cambio: {BLANCO}${cambio}{RESET}")
         else:
-            print("Credenciales incorrectas. Intente nuevamente.")
-    
-    saldo = 5000
-    print(f"\nSu saldo actual: ${saldo}")
-    print(f"Monto a pagar: ${monto}")
-    
-    if monto <= saldo:
-        saldo -= monto
-        print(f"Pago procesado exitosamente.")
-        print(f"Saldo restante: ${saldo}")
-    else:
-        faltante = monto - saldo
-        print(f"Saldo insuficiente. Le faltan: ${faltante}")
-    print("Su compra ha sido realizada con exito.")
-
-
-def pago_cuotas(monto):
-    """Procesa pagos en cuotas"""
-    while True:
-        nombre = input("\nPor favor, ingrese su nombre de usuario: ").strip()
-        clave = input("Por favor, ingrese su contraseña: ").strip()
-        if nombre == 'alex' and clave == '1234':
-            print(f"Credenciales correctas. Bienvenido, {nombre}")
-            break
-        else:
-            print("Credenciales incorrectos. Intente nuevamente.")
-    
-    num_cuotas = int(input("\nEn cuantas cuotas desea pagar?: "))
-    while num_cuotas <= 0:
-        print("La cantidad de cuotas debe ser mayor que cero.")
-        num_cuotas = int(input("En cuantas cuotas desea pagar?: "))
-    
-    pago_mensual = monto / num_cuotas
-    print(f"\nMonto total: ${monto}")
-    print(f"{num_cuotas} cuotas de ${pago_mensual:.0f} cada una.")
-    print("Su compra ha sido realizada con exito.")
-
+            print(f"{BLANCO}Pago exacto{RESET}")
+    elif metodo == 2:
+        limpiar_pantalla()
+        print(f"\n{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+        print(f"{BRIGHT}{VERDE}PROCESANDO PAGO EN DÉBITO{RESET}".center(60))
+        print(f"{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+        print(f"Monto a pagar: {BLANCO}${monto}{RESET}\n")
+        while True:
+            codigo = getpass("Código PIN (4 dígitos): ")
+            if len(codigo) == 4 and codigo.isdigit():
+                print(f"{BLANCO}✓ PIN verificado{RESET}")
+                break
+            limpiar_pantalla()
+            print(f"\n{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+            print(f"{BRIGHT}{VERDE}PROCESANDO PAGO EN DÉBITO{RESET}".center(60))
+            print(f"{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+            print(f"Monto a pagar: {BLANCO}${monto}{RESET}\n")
+            print(f"{BLANCO}Error: Ingrese exactamente 4 dígitos{RESET}")
+    elif metodo == 3:
+        limpiar_pantalla()
+        print(f"\n{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+        print(f"{BRIGHT}{VERDE}PROCESANDO PAGO EN CUOTAS{RESET}".center(60))
+        print(f"{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+        print(f"Monto a pagar: {BLANCO}${monto}{RESET}\n")
+        while True:
+            codigo = getpass("Código PIN (4 dígitos): ")
+            if len(codigo) == 4 and codigo.isdigit():
+                print(f"{BLANCO}✓ PIN verificado{RESET}\n")
+                break
+            limpiar_pantalla()
+            print(f"\n{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+            print(f"{BRIGHT}{VERDE}PROCESANDO PAGO EN CUOTAS{RESET}".center(60))
+            print(f"{BRIGHT}{VERDE}{'▬'*60}{RESET}")
+            print(f"Monto a pagar: {BLANCO}${monto}{RESET}\n")
+            print(f"{BLANCO}Error: Ingrese exactamente 4 dígitos{RESET}")
+        cuotas = 0
+        while True:
+            try:
+                cuotas = int(input("¿En cuantas cuotas?: "))
+                if cuotas > 0:
+                    break
+                print(f"{BLANCO}Error: Ingrese un número mayor a 0{RESET}")
+            except ValueError:
+                print(f"{BLANCO}Error: Ingrese un número válido{RESET}")
+        valor_cuota = monto / cuotas
+        print(f"{BLANCO}Pago de ${valor_cuota:.0f} x {cuotas} cuotas{RESET}")
+    print(f"\n{BRIGHT}{BLANCO}✓ Su compra ha sido realizada con éxito{RESET}")
 
 def japoncito():
-    # Introduccion y presentacion
-    print('\n' + '='*60)
-    print('BIENVENIDO A RESTAURANT JAPONCITO'.center(60))
-    print('='*60)
-    print('En esta app podras armar tu propio roll de sushi a tu gusto.')
-    print('A continuacion, verás el menu con las opciones disponibles.')
-    input('\nPresiona ENTER para continuar...')
-
-    print('\n')
-    total_Pagar = 0
-    num_roll = 1
+    limpiar_pantalla()
+    print(f'\n{BRIGHT}{VERDE}{"▬"*60}{RESET}')
+    print(f'{BRIGHT}{VERDE}BIENVENIDO A RESTAURANT JAPONCITO{RESET}'.center(60))
+    print(f'{BRIGHT}{VERDE}{"▬"*60}{RESET}\n')
+    print(f'{BLANCO}{"─"*60}{RESET}')
+    print(f"{BLANCO}¡Hola! Creamos rolls de sushi 100% personalizados{RESET}")
+    print(f"{BLANCO}según tus gustos. Elige entre nuestras proteínas,{RESET}")
+    print(f"{BLANCO}contornos y envolturas para crear tu roll{RESET}")
+    print(f'{BLANCO}{"─"*60}\n{RESET}')
+    input(f'{VERDE}Presiona ENTER para comenzar...{RESET}')
+    
+    total, rolls, num_roll = 0, [], 1
     
     while True:
         precio = 0
-
-        # Menu proteinas
-        print('\n' + '='*60)
-        print(f'ROLL #{num_roll} - PROTEINAS'.center(60))
+        roll = {}
+        
+        proteinas = {1:["Salmon","1500"],2:["Camaron","1200"],3:["Atun","1800"],
+                    4:["Pollo","1000"],5:["Cerdo","1000"],6:["Carne","1200"]}
+        mostrar_menu(f"ROLL #{num_roll} - PROTEINAS", proteinas)
+        sel = obtener_opcion("\nSeleccione proteina (1-6): ", 1, 6)
+        roll['proteina'], precio = proteinas[sel][0], int(proteinas[sel][1])
+        
+        print(f'\n{"="*60}\n{BRIGHT}{VERDE}QUESO CREMA{RESET}'.center(60))
         print('='*60)
-        proteinas = {
-            1:["Salmon","1500"],
-            2:["Camaron","1200"],
-            3:["Atun","1800"],
-            4:["Pollo","1000"],
-            5:["Cerdo","1000"],
-            6:["Carne","1200"]
-        }
+        queso_opt = obtener_opcion("¿Queso crema? (1=si, 2=no): ", 1, 2)
+        roll['queso'], max_cont = ('si', 1) if queso_opt == 1 else ('no', 2)
+        precio += 800 if queso_opt == 1 else 0
         
-        tabla_proteinas = [[k, v[0], f"${v[1]}"] for k, v in proteinas.items()]
-        print(tabulate(tabla_proteinas, headers=["Opcion", "Proteina", "Precio"], tablefmt="grid"))
-        print()
-        seleccion_Proteina = int(input("Seleccione el numero de su proteina: "))
-
-        if seleccion_Proteina in proteinas:
-            precio += int(proteinas[seleccion_Proteina][1])
+        contornos = {1:["Palta","500"],2:["Pepino","300"],3:["Zanahoria","200"],
+                    4:["Palmito","200"],5:["Piña","300"],6:["Cebollin","200"],7:["Queso Crema","800"]}
+        contornos_sel = []
         
-        contornos_Sel = []
-        max_Contornos = 0
-
-        # Menu queso crema
-        print('\n' + '='*60)
-        print('QUESO CREMA'.center(60))
-        print('='*60)
-        tabla_queso = [["1", "Si", "$800"], ["2", "No", "$0"]]
-        print(tabulate(tabla_queso, headers=["Opcion", "Opcion", "Precio"], tablefmt="grid"))
-        print()
-
-        queso_Crema = input("Desea agregar queso crema al roll? (si/no)\nNota: agregar queso crema cuesta $800 \ny reduce el maximo de contornos de dos a uno: ").lower()
-
-        if queso_Crema == 'si':
-            queso_Crema = 'con queso'
-            precio += 800
-            max_Contornos += 1
-        elif queso_Crema == 'no':
-            queso_Crema = 'sin queso'
-            max_Contornos += 2
-        else:
-            print("Opcion invalida.")
+        while max_cont > 0:
+            limpiar_pantalla()
+            mostrar_menu(f"CONTORNOS ({max_cont} disponibles)", contornos)
+            sel = obtener_opcion(f"\nSeleccione contorno (1-7): ", 1, 7)
+            precio += int(contornos[sel][1])
+            contornos_sel.append(contornos[sel][0])
+            max_cont -= 1
         
-        # Menu contornos
-        while max_Contornos > 0:
-            print('\n' + '='*60)
-            print(f'CONTORNOS ({max_Contornos} disponibles)'.center(60))
-            print('='*60)
-            contornos = {
-                1:["Palta","500"],
-                2:["Pepino","300"],
-                3:["Zanahoria","200"],
-                4:["Palmito","200"],
-                5:["Piña","300"],
-                6:["Cebollin","200"]
-            }
-            
-            tabla_contornos = [[k, v[0], f"${v[1]}"] for k, v in contornos.items()]
-            print(tabulate(tabla_contornos, headers=["Opcion", "Contorno", "Precio"], tablefmt="grid"))
-            print()
-            seleccion_Contornos = int(input("Seleccione el numero de su contorno: "))
-
-            precio_Contorno = int(contornos[seleccion_Contornos][1])
-            precio += precio_Contorno
-            max_Contornos -= 1
-            contornos_Sel.append(contornos[seleccion_Contornos][0])
+        envolturas = {1:["Sesamo","100"],2:["Palta","800"],3:["Queso Crema","1000"],
+                    4:["Salmon","1500"],5:["Panko","300"],6:["Tempura","200"]}
+        mostrar_menu("ENVOLTURA", envolturas)
+        sel = obtener_opcion("\nSeleccione envoltura (1-6): ", 1, 6)
+        roll['envoltura'] = envolturas[sel][0]
+        precio += int(envolturas[sel][1])
         
-        # Menu envolturas
-        print('\n' + '='*60)
-        print('ENVOLTURA'.center(60))
-        print('='*60)
-        envolturas = {
-            1:["Sesamo","100"],
-            2:["Palta","800"],
-            3:["Queso Crema","1000"],
-            4:["Salmon","1500"],
-            5:["Panko","300"],
-            6:["Tempura","200"]
-        }
+        roll['contornos'], roll['costo'] = contornos_sel, precio
+        rolls.append(roll)
+        total += precio
         
-        tabla_envolturas = [[k, v[0], f"${v[1]}"] for k, v in envolturas.items()]
-        print(tabulate(tabla_envolturas, headers=["Opcion", "Envoltura", "Precio"], tablefmt="grid"))
-        print()
-        seleccion_Envolturas = int(input("Seleccione el numero de su envoltura: "))
-
-        if seleccion_Envolturas in envolturas:
-            precio += int(envolturas[seleccion_Envolturas][1])
+        print(f"\n{"-"*60}")
+        print(f"{BRIGHT}{BLANCO}Tu roll #{num_roll}: ${precio}{RESET}")
+        print(f"{"-"*60}")
+        print(f"{BLANCO}• Proteína: {roll['proteina']}")
+        print(f"• Queso: {roll['queso']}")
+        print(f"• Contornos: {', '.join(contornos_sel)}")
+        print(f"• Envoltura: {roll['envoltura']}{RESET}")
+        print(f"{"-"*60}")
         
-        total_Pagar += precio
-        print("\n" + "-"*60)
-        print(f"Total a pagar por este roll: ${precio}")
-        print(f"Contornos elegidos: {', '.join(contornos_Sel)}")
-        print("-"*60)
-        print()
+        print(f"\n{BRIGHT}{VERDE}¿QUÉ DESEA?{RESET}")
+        print(f"{BLANCO}1. Agregar otro roll  │  2. Ir a pago  │  3. Cancelar{RESET}")
+        opt = obtener_opcion("Seleccione opción: ", 1, 3)
         
-        # Opcion para continuar pidiendo
-        seguir_pedido = input("Desea preparar otro roll? (si/no): ").lower()
-        if seguir_pedido == "no":
+        if opt == 1:
+            num_roll += 1
+            limpiar_pantalla()
+        elif opt == 2:
             break
-        num_roll += 1
-
-    # Metodo de pago
-    print('\n' + '='*60)
-    print('METODO DE PAGO'.center(60))
-    print('='*60)
-    tabla_pagos = [
-        ["1", "Efectivo"],
-        ["2", "Debito (usuario: alex | clave: 1234)"],
-        ["3", "Cuotas (usuario: alex | clave: 1234)"]
-    ]
-    print(tabulate(tabla_pagos, headers=["Opcion", "Metodo"], tablefmt="grid"))
-    print()
+        else:
+            print(f"\n{BLANCO}Compra cancelada. ¡Hasta luego!{RESET}\n")
+            return
+        
+    limpiar_pantalla()
+    print(f'\n{BRIGHT}{VERDE}{"▬"*60}{RESET}')
+    print(f'{BRIGHT}{VERDE}RESUMEN DE TU PEDIDO{RESET}'.center(60))
+    print(f'{BRIGHT}{VERDE}{"▬"*60}{RESET}')
+    for i, r in enumerate(rolls, 1):
+        cont = ', '.join(r['contornos']) if r['contornos'] else 'ninguno'
+        print(f"\n{BLANCO}Roll #{i}:{RESET}")
+        print(f"  • {r['proteina']} | Queso: {r['queso']} | {cont}")
+        print(f"  • Envoltura: {r['envoltura']} {BLANCO}→ ${r['costo']}{RESET}")
+    print(f"\n{BRIGHT}{VERDE}{"▬"*60}{RESET}")
+    print(f"{BRIGHT}{BLANCO}TOTAL A PAGAR: ${total}{RESET}")
+    print(f'{BRIGHT}{VERDE}{"▬"*60}{RESET}\n')
     
-    metodo_pago = input("Seleccione su metodo de pago (1/2/3): ").strip()
+    pagos = {1:"Efectivo", 2:"Débito", 3:"Cuotas"}
+    print(f'{BRIGHT}{VERDE}{"▬"*60}{RESET}')
+    print(f'{BRIGHT}{VERDE}MÉTODO DE PAGO{RESET}'.center(60))
+    print(f'{BRIGHT}{VERDE}{"▬"*60}{RESET}')
+    tabla = [[k, v] for k, v in pagos.items()]
+    print(tabulate(tabla, headers=["Opción", "Método"], tablefmt="grid"))
+    print(f"\n{BRIGHT}{BLANCO}Monto a pagar: ${total}{RESET}\n")
     
-    if metodo_pago == '1':
-        print("\nProcesando pago en EFECTIVO...")
-        pago_efectivo(total_Pagar)
-    elif metodo_pago == '2':
-        print("\nProcesando pago en DEBITO...")
-        pago_debito(total_Pagar)
-    elif metodo_pago == '3':
-        print("\nProcesando pago en CUOTAS...")
-        pago_cuotas(total_Pagar)
+    metodo = obtener_opcion("Seleccione método de pago (1-3): ", 1, 3)
+    procesar_pago(total, metodo)
+    
+    input(f'{BLANCO}Presiona ENTER para continuar...{RESET}')
+    limpiar_pantalla()
+    print(f'{BRIGHT}{VERDE}{"▬"*60}{RESET}')
+    print(f'{BRIGHT}{VERDE}MUCHAS GRACIAS POR PREFERIR JAPONCITO{RESET}'.center(60))
+    print(f'{BRIGHT}{VERDE}{"▬"*60}{RESET}\n')
+    
+    print(f"{BRIGHT}{VERDE}¿QUÉ DESEA HACER?{RESET}")
+    print(f"{BLANCO}1. Nueva compra  │  2. Salir{RESET}")
+    if obtener_opcion("Seleccione opción: ", 1, 2) == 1:
+        japoncito()
     else:
-        print("Opcion invalida. Pago no procesado.")
-
-    # Resumen y saludo final
-    print('\n' + '='*60)
-    print('RESUMEN PEDIDO'.center(60))
-    print('='*60)
-    print(f"Total a pagar por los {num_roll-1} roll(s) de sushi: ${total_Pagar}")
-    print()
-    print('MUCHAS GRACIAS POR PREFERIR EL RESTAURANT JAPONCITO'.center(60))
-    print('FELIZ DIA!'.center(60))
-    print('='*60 + '\n')
-
+        print(f"\n{BRIGHT}{BLANCO}¡Gracias por visitarnos en JAPONCITO!{RESET}\n")
 
 japoncito()
-print('--'*30)
-
-
-japoncito()
-
