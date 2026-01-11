@@ -36,22 +36,34 @@ Japoncito/
 ---
 
 <details>
-<summary><strong>📸 Capturas de pantalla</strong></summary>
+<summary><strong>🍣 Capturas de pantalla</strong></summary>
 
 ### Bienvenida
 
-![Bienvenida](./src/japoncito(1).png)
+![Bienvenida](./assets/japoncito1.png)
+
+### Selección de proteínas
+
+![Selección de proteínas](./assets/japoncito2.png)
 
 ### Selección de contornos
 
-![Contornos](./screenshots/contornos.png)
+![Selección de contornos](./assets/japoncito3.png)
+
+### Resumen del roll actual
+
+![Bienvenida](./assets/japoncito4.png)
 
 ### Resumen del pedido
 
-![Metodo de pago](./screenshots/resumen.png)
+![Bienvenida](./assets/japoncito5.png)
 
-### Método de pago
+### Resumen del roll actual
 
-![Resumen](./screenshots/pago.png)
+![Bienvenida](./assets/japoncito6.png)
+
+### Resumen del roll actual
+
+![Bienvenida](./assets/japoncito7.png)
 
 </details>
