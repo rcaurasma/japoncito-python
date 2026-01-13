@@ -1,3 +1,36 @@
+<details>
+<summary><strong>🍣 Capturas de pantalla</strong></summary>
+
+### Bienvenida
+
+![Bienvenida](./assets/japoncito1.png)
+
+### Selección de proteínas
+
+![Selección de proteínas](./assets/japoncito2.png)
+
+### Selección de contornos
+
+![Selección de contornos](./assets/japoncito3.png)
+
+### Resumen del roll actual
+
+![Resumen del roll actual](./assets/japoncito4.png)
+
+### Resumen del pedido
+
+![Resumen del pedido](./assets/japoncito5.png)
+
+### Medio de pago
+
+![Pago](./assets/japoncito6.png)
+
+### Despedida
+
+![Despedida](./assets/japoncito7.png)
+
+</details>
+
 # Japoncito - Sistema de Pedidos de Sushi
 
 Sistema de simulación en Python para gestionar pedidos de sushi. Selecciona proteína, contornos y envoltura, calcula el total automáticamente y elige método de pago.
@@ -34,35 +67,3 @@ Japoncito/
 - Python 3.12+
 ---
 
-<details>
-<summary><strong>🍣 Capturas de pantalla</strong></summary>
-
-### Bienvenida
-
-![Bienvenida](./assets/japoncito1.png)
-
-### Selección de proteínas
-
-![Selección de proteínas](./assets/japoncito2.png)
-
-### Selección de contornos
-
-![Selección de contornos](./assets/japoncito3.png)
-
-### Resumen del roll actual
-
-![Resumen del roll actual](./assets/japoncito4.png)
-
-### Resumen del pedido
-
-![Resumen del pedido](./assets/japoncito5.png)
-
-### Medio de pago
-
-![Pago](./assets/japoncito6.png)
-
-### Despedida
-
-![Despedida](./assets/japoncito7.png)
-
-</details>
